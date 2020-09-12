@@ -17,5 +17,5 @@ object Main extends App {
 //    "/tmp/routes.dat")
 //    .download
 
-  TopAirportsBatchWriter("/tmp/routes.dat", "/tmp/export_top10_airports").exportTop10SourceAirports
+  TopAirportsBatchWriter("/tmp/routes.dat", "/tmp/export_top10_airports").exportTopSourceAirports()
 }

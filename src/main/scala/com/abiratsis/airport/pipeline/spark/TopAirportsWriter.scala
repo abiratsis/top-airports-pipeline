@@ -4,14 +4,10 @@ trait TopAirportsWriter {
   import org.apache.spark.sql.SparkSession
   import org.apache.spark.sql.types.StructType
 
-  val spark : SparkSession
-  val sourcePath: String
-  val exportPath: String
-  val format: String
+  protected val spark : SparkSession
+  protected val sourcePath: String
 
-  def exportTop10SourceAirports: Unit
-
-  val routeSchema = new StructType()
+  protected val routeSchema = new StructType()
     .add("airlineCode", "string")
     .add("airLineId", "int")
     .add("sourceAirportCode", "string")
@@ -21,8 +17,4 @@ trait TopAirportsWriter {
     .add("codeshare", "string")
     .add("stops", "int")
     .add("equipments", "string")
-}
-
-object TopAirportsWriter{
-  val validFormats = Set("parquet", "text", "csv", "avro")
 }

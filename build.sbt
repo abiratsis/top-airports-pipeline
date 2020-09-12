@@ -1,4 +1,4 @@
-name := "top-aiports-pipeline"
+name := "top-airports-pipeline"
 
 version := "0.1"
 
