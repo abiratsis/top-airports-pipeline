@@ -3,12 +3,12 @@ import org.apache.spark.sql.SparkSession
 
 class TopAirportsBatchWriter private(val spark: SparkSession,
                                       val sourcePath: String,
-                                      val exportPath: String,
+                                      val destination: String,
                                       val format: String)
   extends TopAirportsWriter {
   import org.apache.spark.sql.functions.{count, desc}
 
-  def exportTopSourceAirports(): Unit = {
+  def saveTop10Airports(): Unit = {
     import spark.implicits._
 
     spark.read.schema(routeSchema).csv(sourcePath)
@@ -19,7 +19,7 @@ class TopAirportsBatchWriter private(val spark: SparkSession,
       .write
       .format(format)
       .mode("overwrite")
-      .save(exportPath)
+      .save(destination)
   }
 }
 
@@ -28,14 +28,14 @@ object TopAirportsBatchWriter{
   import com.abiratsis.airport.pipeline.common.String
 
   val validFormats = Set("parquet", "text", "csv", "avro")
-  def apply(sourcePath: String, exportPath: String, format: String = "parquet")(implicit spark: SparkSession):
+  def apply(sourcePath: String, destination: String, format: String = "parquet")(implicit spark: SparkSession):
     TopAirportsBatchWriter = {
 
     if(String.isNullOrEmpty(sourcePath))
       throw new NullOrEmptyArgumentException("sourcePath")
 
-    if(String.isNullOrEmpty(exportPath))
-      throw new NullOrEmptyArgumentException("exportPath")
+    if(String.isNullOrEmpty(destination))
+      throw new NullOrEmptyArgumentException("destination")
 
     if(String.isNullOrEmpty(format))
       throw new NullOrEmptyArgumentException("format")
@@ -43,7 +43,7 @@ object TopAirportsBatchWriter{
     if (!validFormats.contains(format))
       throw new IllegalArgumentException(s"Format should be one of the:${validFormats.mkString(",")}")
 
-    new TopAirportsBatchWriter(spark, sourcePath, exportPath, format)
+    new TopAirportsBatchWriter(spark, sourcePath, destination, format)
   }
 }
 

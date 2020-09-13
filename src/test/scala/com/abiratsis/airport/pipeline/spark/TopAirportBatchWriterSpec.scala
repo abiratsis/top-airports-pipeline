@@ -9,7 +9,7 @@ class TopAirportBatchWriterSpec extends AnyFlatSpec with SharedSparkSession{
     import com.abiratsis.airport.pipeline.common.Util.deleteDir
     val inputPath = "src/test/resources/test_routes.csv"
 
-    TopAirportsBatchWriter(inputPath, "/tmp/export").exportTopSourceAirports()
+    TopAirportsBatchWriter(inputPath, "/tmp/export").saveTop10Airports()
 
     val exportPath = "/tmp/export"
     val actualDf = spark.read.parquet(exportPath)
@@ -34,7 +34,7 @@ class TopAirportBatchWriterSpec extends AnyFlatSpec with SharedSparkSession{
     import com.abiratsis.airport.pipeline.common.Util.deleteDir
     val inputPath = "src/test/resources/test_routes_emptyid.csv"
 
-    TopAirportsBatchWriter(inputPath, "/tmp/export").exportTopSourceAirports()
+    TopAirportsBatchWriter(inputPath, "/tmp/export").saveTop10Airports()
 
     val exportPath = "/tmp/export"
     val actualCount = spark.read.parquet(exportPath).count()
@@ -50,7 +50,7 @@ class TopAirportBatchWriterSpec extends AnyFlatSpec with SharedSparkSession{
 
     val inputPath = "src/test/resources/test_routes_invalidschema.csv"
 
-    TopAirportsBatchWriter(inputPath, "/tmp/export").exportTopSourceAirports()
+    TopAirportsBatchWriter(inputPath, "/tmp/export").saveTop10Airports()
 
     val exportPath = "/tmp/export"
     val actualDf = spark.read.parquet(exportPath).cache()

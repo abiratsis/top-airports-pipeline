@@ -6,8 +6,9 @@ trait TopAirportsWriter {
 
   protected val spark : SparkSession
   protected val sourcePath: String
+  protected val destination: String
 
-  protected val routeSchema = new StructType()
+  val routeSchema = new StructType()
     .add("airlineCode", "string")
     .add("airLineId", "int")
     .add("sourceAirportCode", "string")
