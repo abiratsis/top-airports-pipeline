@@ -26,6 +26,7 @@ class TopAirportsStreamWriter private(val spark: SparkSession,
       )
       .agg(count("sourceAirportId").as("sourceCount"))
       .orderBy(desc("sourceCount"))
+      .limit(10)
       .writeStream
       .format("memory")
       .queryName(destination)

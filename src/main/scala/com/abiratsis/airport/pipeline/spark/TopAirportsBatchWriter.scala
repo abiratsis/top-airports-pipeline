@@ -16,6 +16,7 @@ class TopAirportsBatchWriter private(val spark: SparkSession,
       .groupBy("sourceAirportId", "sourceAirportCode")
       .agg(count("sourceAirportId").as("sourceCount"))
       .orderBy(desc("sourceCount"))
+      .limit(10)
       .write
       .format(format)
       .mode("overwrite")
