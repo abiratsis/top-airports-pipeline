@@ -15,12 +15,12 @@ class TopAirportsStreamWriter private(val spark: SparkSession,
     spark
       .readStream
       .schema(routeSchema) // Specify schema of the csv files
-      .format("csv")
-      .load(sourcePath)
+      .option("delimiter", ",")
+      .csv(sourcePath)
       .withColumn("processingTime",current_timestamp())
       .where($"sourceAirportId".isNotNull) // we found some null values
       .groupBy(
-        window($"processingTime", "1 second"),
+        window($"processingTime", "10 milliseconds"),
         $"sourceAirportId",
         $"sourceAirportCode"
       )
