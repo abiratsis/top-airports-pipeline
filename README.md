@@ -161,7 +161,7 @@ To execute all the available tests navigate under the project root folder and ex
 
 Or execute a specific test class using:
 ```commandline
-testOnly com.abiratsis.ctracking.reader.CsvReaderSpec
+testOnly *TopAirportBatchWriterSpec
 ```
 
 **Thank you! :)**
