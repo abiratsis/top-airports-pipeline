@@ -7,7 +7,7 @@ and computes the top 10 most used source airports.
 
 ### How
 
-The application provides both batch and stream processing via Apache Spark. The two features are provided through
+The application provides both batch and stream processing via Apache Spark. These two methods are implemented through
 two basic classes, TopAirportsBatchWriter for batch and TopAirportsStreamWriter for stream processing. Both classes
 implement TopAirportsWriter trait.
 
@@ -17,9 +17,9 @@ The streaming processor writes the aggregated results in memory using `format("m
  - It supports the `complete` output mode.
 
 Additionally, we used `complete` as the output mode, since it supports all the streaming features that we need for our application
-i.e: orderBy, aggregation. Finally, we know that given the size of the dataset (~2MB), it is safe to assume that we don't expect to face any OOM error.
+i.e: orderBy, aggregation. Finally, we know that given the size of the dataset (~2MB), it is safe to assume that we don't expect to see any OOM error.
 
-As we will see next, there two basic usages of the solution. The first is to use as a library (i.e import it in databricks), and the second as an executable command-line program.
+As we will see next, there two basic usages of the solution. The first is to use as a library (i.e import it in databricks), and the second as a command-line program.
 
 ### Getting Started
 
@@ -88,9 +88,10 @@ And for streaming:
 docker run -m=2g abiratsis/top-airports-pipeline:0.8 -m "s" -i "/tmp/routes.dat*" -d "memory_results_export" --download-data```
 ```
 
-2) The second option is call the API in databricks. You can achieve this by importing the published notebook [here](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4632767432671086/2506865405105341/3460815830528730/latest.html)
+2) The second option is by calling the API in databricks. This option requires attaching `top-airports-pipeline_2.12-0.1.jar` to your databricks cluster. 
+Next you must import and execute the published notebook [here](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4632767432671086/2506865405105341/3460815830528730/latest.html)
 
-3) Last but not least, you can build and execute the program from command line. For the third option please follow the next steps:
+3) Last but not least, you can build and execute the program locally. For the third option please follow the next steps:
 
 - Navigate under the root folder i.e: `/Users/you/Documents/top-airports-pipeline`
 - Execute `sbt assembly` from command line (if not already executed on the previous step)
@@ -104,10 +105,10 @@ Example1 streaming mode:
 ./tapipe.sh -m "s" -i "/tmp/routes*" -d "memory_results"
 ```
 
-First note the `-m "s"` which indicates the streaming mode. Next we specify the input source with `-i "/tmp/routes*"` and 
+The argument `-m "s"` indicates the streaming mode. Next we specify the input source with `-i "/tmp/routes*"` and 
 eventually the destination(memory) with `-d "memory_results"`.
 
-The command should print a similar output:
+And this is how the command output should look like:
 ```commandline
 Streaming results at 2020-09-15T15:28:05.074:
 
