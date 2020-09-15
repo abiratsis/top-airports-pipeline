@@ -33,10 +33,7 @@ object Main{
     }
 
     spark.sparkContext.setLogLevel("WARN")
-    Signal.handle(new Signal("INT"), (sig: Signal) => {
-      println(s"Signal was caught. Name: ${sig.getName} number: ${sig.getNumber}")
-      stop = true
-    })
+    Signal.handle(new Signal("INT"), (_: Signal) => stop = true)
 
     userInput.mode match {
       case "b" => {
