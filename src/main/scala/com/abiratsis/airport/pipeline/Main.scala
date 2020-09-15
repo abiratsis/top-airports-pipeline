@@ -78,6 +78,7 @@ object Main{
 
           println(s"Streaming results at ${java.time.LocalDateTime.now}:\n")
           resultsDf.show(10, false)
+          println("\nPress CTL+R to terminate the program.")
         }
 
         val random: ThreadLocalRandom = ThreadLocalRandom.current()

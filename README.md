@@ -85,7 +85,7 @@ docker run -m=2g abiratsis/top-airports-pipeline:0.1 -m "b" -i "/tmp/routes.dat*
 
 And for streaming:
 ```commandline
-docker run -m=2g abiratsis/top-airports-pipeline:0.8 -m "s" -i "/tmp/routes.dat*" -d "memory_results_export" --download-data```
+docker run -m=2g abiratsis/top-airports-pipeline:0.1 -m "s" -i "/tmp/routes.dat*" -d "memory_results_export" --download-data```
 ```
 
 2) The second option is by calling the API in databricks. This option requires attaching `top-airports-pipeline_2.12-0.1.jar` to your databricks cluster. 
