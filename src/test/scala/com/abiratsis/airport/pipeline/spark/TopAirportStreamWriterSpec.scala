@@ -30,6 +30,7 @@ class TopAirportStreamWriterSpec extends AnyFlatSpec with SharedSparkSession{
     ).toDF("sourceAirportId", "sourceAirportCode", "sourceCount")
 
     assert(expectedDf.except(actualDf).isEmpty)
+    streamQuery.stop()
   }
 
   "getTop10Airports" should "ignore rows with empty sourceAirportId" in{
@@ -44,6 +45,7 @@ class TopAirportStreamWriterSpec extends AnyFlatSpec with SharedSparkSession{
     val expectedCount = 6
 
     assert(actualCount == expectedCount)
+    streamQuery.stop()
   }
 
   "getTop10Airports" should "should ignore rows with invalid schema" in{
@@ -68,6 +70,7 @@ class TopAirportStreamWriterSpec extends AnyFlatSpec with SharedSparkSession{
 
     assert(actualDf.count() == 9)
     assert(expectedDf.except(actualDf).isEmpty)
+    streamQuery.stop()
   }
 
   "apply" should "should throw NullOrEmptyArgumentException given null or empty paths" in{

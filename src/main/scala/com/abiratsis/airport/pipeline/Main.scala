@@ -1,6 +1,6 @@
 package com.abiratsis.airport.pipeline
 
-import com.abiratsis.airport.pipeline.common.{CommandLineHandler, FileDownloader, UserInput}
+import com.abiratsis.airport.pipeline.common.{CommandLineHandler, DataDownloader, UserInput}
 import com.abiratsis.airport.pipeline.spark.{TopAirportsBatchWriter, TopAirportsStreamWriter}
 import java.util.concurrent.ThreadLocalRandom
 
@@ -26,7 +26,7 @@ object Main{
     val userInput = UserInput(cmd)
 
     if (userInput.downloadData) {
-      FileDownloader(
+      DataDownloader(
         "https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat",
         userInput.inputFile
       ).download
