@@ -28,6 +28,7 @@ These are the mandatory packages that should be installed in your system before 
 
 1. [Java 8](https://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html)
 2. [SBT 1.3.13](http://eed3si9n.com/sbt-1.3.13)
+3. [Docker desktop](https://www.docker.com/products/docker-desktop)
 
 #### Building the project
 As mentioned above the application uses SBT. To build the project navigate to the project folder and execute the shell command:
@@ -45,7 +46,9 @@ import com.abiratsis.airport.pipeline.spark.TopAirportsBatchWriter
 TopAirportsBatchWriter("dbfs:/FileStore/top-airports/routes.dat", exportPath)(spark).saveTop10Airports()
 ```
 
-If you are willing to run the application in an environment where Scala and Spark are not installed, you will need to generate an executable (fat) jar. 
+If you are willing to run the application in an environment where Scala and Spark are not installed, you have two options either to run the application docker image or
+to generate an executable (fat) jar. 
+
 To create the fat jar follow the next steps:
 - First navigate to the root folder of the project
 - Execute the command: ``sbt assembly``
@@ -54,17 +57,6 @@ The command will build the code and generate a fat jar using the [sbt-assembly](
 We will need these two files, to be able to use the solution as an executable program, as we will see next.
 
 ### Running the application
-
-To access the API in databricks please use the published notebook [here](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4632767432671086/2506865405105341/3460815830528730/latest.html)
-
-As mentioned, users are able to use the application through the command line. To do so please follow the next steps:
-
-- Navigate under the root folder i.e: `/Users/you/Documents/top-airports-pipeline`
-- Execute `sbt assembly` from command line (if not already executed on the previous step)
-- Navigate under `target\scala-2.12`
-- Grant execute permission to `tapipe.sh` with `chmod +x tapipe.sh`
-
-Now you are ready to run the program.
 
 As discussed, there are two available modes for running the program, the batch and the streaming mode. Each mode, uses the corresponding 
 arguments as seen below:
@@ -82,12 +74,37 @@ arguments as seen below:
   -v, --version              Show version of this program
 ```
 
+There three different ways to execute the application.
+
+1) The first and the easiest one is by executing the corresponding docker image `abiratsis/top-airports-pipeline`. 
+
+For batch mode execute:
+```commandline
+docker run -m=2g abiratsis/top-airports-pipeline:0.1 -m "b" -i "/tmp/routes.dat*" -d "/tmp/memory_results_export" --download-data
+```
+
+And for streaming:
+```commandline
+docker run -m=2g abiratsis/top-airports-pipeline:0.8 -m "s" -i "/tmp/routes.dat*" -d "memory_results_export" --download-data```
+```
+
+2) The second option is call the API in databricks. You can achieve this by importing the published notebook [here](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4632767432671086/2506865405105341/3460815830528730/latest.html)
+
+3) Last but not least, you can build and execute the program from command line. For the third option please follow the next steps:
+
+- Navigate under the root folder i.e: `/Users/you/Documents/top-airports-pipeline`
+- Execute `sbt assembly` from command line (if not already executed on the previous step)
+- Navigate under `target\scala-2.12`
+- Grant execute permission to `tapipe.sh` with `chmod +x tapipe.sh`
+
+Now you are ready to run the program.
+
 Example1 streaming mode:
 ```commandline
 ./tapipe.sh -m "s" -i "/tmp/routes*" -d "memory_results"
 ```
 
-Starting with, notice the `-m "s"` which indicates the streaming mode. Next we specify the input source with `-i "/tmp/routes*"` and 
+First note the `-m "s"` which indicates the streaming mode. Next we specify the input source with `-i "/tmp/routes*"` and 
 eventually the destination(memory) with `-d "memory_results"`.
 
 The command should print a similar output:
